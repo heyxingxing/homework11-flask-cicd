@@ -1,0 +1,20 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.git/
+.github/
+.gitignore
+.DS_Store
+.env*
+# 测试、部署脚本和实验记录不进入镜像构建上下文。
+tests/
+deploy/
+nginx/
+evidence/
+requirements-dev.txt
+pytest.ini
+*.md
+*.log
+*.zip

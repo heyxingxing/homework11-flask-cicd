@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+# 原始截图和日志只保存在本机，不提交到仓库。
+evidence/

@@ -1,0 +1,4 @@
+# 单元测试依赖；运行时镜像只安装 requirements.txt。
+-r requirements.txt
+pytest==9.2.0
+fakeredis==2.40.0
