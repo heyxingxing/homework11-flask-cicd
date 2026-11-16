@@ -21,7 +21,7 @@ push 到 `main`（或手动 `workflow_dispatch`）后依次执行：
 
 前一个 job 失败，后面的 job 不运行（`needs`）。deploy 只在 `main` 分支运行，并用 `concurrency` 保证同一时间只有一次部署。
 
-镜像传输方式：服务器直连 Docker Hub 超时（`docker pull` 47 秒后失败），因此采用 artifact + scp + `docker load`，原因与过程见失败修复记录第 2 条。
+镜像传输方式：服务器直连 Docker Hub 超时（`docker pull` 47 秒后失败），因此采用 artifact + scp + `docker load`。
 
 ## Secrets 与 Variables
 
@@ -36,7 +36,7 @@ push 到 `main`（或手动 `workflow_dispatch`）后依次执行：
 | `DEPLOY_HOST` | Variable | 服务器地址 `10.126.56.21` | deploy |
 | `DEPLOY_USER` | Variable | 服务器登录用户 `yifei` | deploy |
 
-注：用户名放在 Variable 而不是 Secret 中，否则日志里的镜像名会被打码成 `***`。仓库的 `DOCKERHUB_TOKEN` 由本人在网页上填写，其余 Secrets 与 Variables 用 `gh secret set`、`gh variable set` 写入。包内不含 Token、私钥和密码。
+注：用户名放在 Variable 而不是 Secret 中，否则日志里的镜像名会被打码成 `***`。仓库的 `DOCKERHUB_TOKEN` 由本人在网页上填写，其余 Secrets 与 Variables 用 `gh secret set`、`gh variable set` 写入。仓库中不含 Token、私钥和密码。
 
 ## 复现步骤
 
