@@ -16,7 +16,7 @@ Flask + Redis 商品缓存应用，配套 GitHub Actions 流水线：push 到 `m
 push 到 `main`（或手动 `workflow_dispatch`）后依次执行：
 
 1. **test**（GitHub 托管 runner）：安装依赖，运行 8 个 pytest 用例，用 fakeredis 替代 Redis。
-2. **build-push**（GitHub 托管 runner）：用 Docker 官方 action 构建 `linux/amd64` 镜像，推送 `{用户名}/homework11-flask-cicd:{commit SHA}` 和 `latest`；再把推送的镜像拉回，保存为 gzip artifact（保留 1 天）。
+2. **build-push**（GitHub 托管 runner）：用 Docker 官方 action 构建 `linux/amd64` 镜像，推送 `{用户名}/homework11-flask-cicd:{commit SHA}` 和 `latest`；再重新拉取该镜像，保存为 gzip artifact（保留 1 天）。
 3. **deploy**（本机 self-hosted runner，标签 `hw11-deploy`）：下载 artifact，经 SSH 传到服务器，`docker load` 后运行 `deploy.sh`，校验 `/health` 和 `/version`，失败时恢复上一版镜像。
 
 前一个 job 失败，后面的 job 不运行（`needs`）。deploy 只在 `main` 分支运行，并用 `concurrency` 保证同一时间只有一次部署。
@@ -67,7 +67,7 @@ gh secret set SSH_KNOWN_HOSTS < /tmp/hw11_known_hosts
 
 ### 3 注册本机 runner
 
-deploy 在本机执行：服务器地址 `10.126.56.21` 是校内地址，GitHub 托管的 runner 连不进来；服务器的 Ubuntu 18.04 又运行不了新版 runner（自带的 Node 20 要求 glibc 2.28）；本机能 SSH 到服务器，因此作为中转。
+deploy 在本机执行：服务器地址 `10.126.56.21` 是校内地址，GitHub 托管的 runner 无法访问；服务器的 Ubuntu 18.04 又运行不了新版 runner（自带的 Node 20 要求 glibc 2.28）；本机能 SSH 到服务器，因此作为中转。
 
 ```bash
 mkdir -p ~/actions-runners/hw11 && cd ~/actions-runners/hw11
