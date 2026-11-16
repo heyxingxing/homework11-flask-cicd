@@ -52,3 +52,69 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ env.IMAGE_NAME }}:latest
+
+      # 服务器无法直连 Docker Hub：把刚推送的镜像拉回来存成 gzip，交给 deploy 传到服务器。
+      - name: Save pushed image as artifact
+        run: |
+          docker pull "${IMAGE_NAME}:${GITHUB_SHA}"
+          docker save "${IMAGE_NAME}:${GITHUB_SHA}" | gzip > image.tar.gz
+          ls -lh image.tar.gz
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: image
+          path: image.tar.gz
+          retention-days: 1
+
+  deploy:
+    needs: build-push
+    if: github.ref == 'refs/heads/main'
+    # 校内服务器只有本机能连，deploy 在本机 self-hosted runner 上执行。
+    runs-on: [self-hosted, hw11-deploy]
+    concurrency:
+      group: hw11-deploy
+      cancel-in-progress: false
+    env:
+      DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+      REMOTE_DIR: /home/${{ vars.DEPLOY_USER }}/homework11-cicd
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: image
+
+      - name: Prepare SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          umask 077
+          mkdir -p "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$RUNNER_TEMP/ssh/id"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$RUNNER_TEMP/ssh/known_hosts"
+          cat > "$RUNNER_TEMP/ssh/config" <<EOF
+          Host deploy
+            HostName ${DEPLOY_HOST}
+            User ${DEPLOY_USER}
+            IdentityFile ${RUNNER_TEMP}/ssh/id
+            IdentitiesOnly yes
+            UserKnownHostsFile ${RUNNER_TEMP}/ssh/known_hosts
+            StrictHostKeyChecking yes
+            BatchMode yes
+            ConnectTimeout 15
+          EOF
+
+      - name: Upload image and script
+        run: |
+          ssh -F "$RUNNER_TEMP/ssh/config" deploy "mkdir -p $REMOTE_DIR"
+          scp -F "$RUNNER_TEMP/ssh/config" image.tar.gz deploy/deploy.sh "deploy:$REMOTE_DIR/"
+
+      - name: Load image and deploy
+        run: |
+          ssh -F "$RUNNER_TEMP/ssh/config" deploy "set -e; cd $REMOTE_DIR; docker load -i image.tar.gz; rm -f image.tar.gz; bash deploy.sh '${IMAGE_NAME}:${GITHUB_SHA}' '${GITHUB_SHA}'"
+
+      - name: Remove SSH material
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/ssh"
