@@ -1,6 +1,7 @@
 """Flask + Redis 商品列表缓存演示（作业11 CI/CD 版本）：网页和 JSON 接口共用 get_products。"""
 import json
 import os
+import socket
 import time
 from datetime import datetime, timedelta, timezone
 
@@ -82,7 +83,7 @@ def app_version():
 
 @app.context_processor
 def inject_version():
-    return {"app_version": app_version()}
+    return {"app_version": app_version(), "hostname": socket.gethostname(), "redis_host": REDIS_HOST}
 
 
 @app.after_request

@@ -21,8 +21,9 @@ WORKDIR /app
 COPY --from=builder /opt/deps /opt/deps
 # 复制应用入口，不把报告、截图和验证日志打进镜像。
 COPY app.py .
-# 复制 Flask 的 HTML 模板目录。
+# 复制 Flask 的 HTML 模板目录和随页面发布的字体文件。
 COPY templates/ ./templates/
+COPY static/ ./static/
 # 使用非 root 数字用户运行；应用只读源码，日志输出到标准输出。
 USER 10001:10001
 # 声明容器服务监听的端口；该指令不会发布宿主机端口。

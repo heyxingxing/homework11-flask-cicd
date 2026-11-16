@@ -62,3 +62,19 @@ def test_version_returns_app_version(client, monkeypatch):
     resp = client.get("/version")
     assert resp.status_code == 200
     assert resp.get_json() == {"app": "homework11-flask-cicd", "version": "3f2c1ab"}
+
+
+def test_index_page_shows_version_and_cache_state(client, monkeypatch):
+    monkeypatch.setenv("APP_VERSION", "3f2c1ab9d0e8")
+    first = client.get("/")
+    assert first.status_code == 200
+    assert "3f2c1ab9d0e8" in first.get_data(as_text=True)
+    assert "MISS" in first.get_data(as_text=True)
+    assert "HIT" in client.get("/").get_data(as_text=True)
+
+
+def test_index_page_redis_error_returns_503(client, server):
+    server.connected = False
+    resp = client.get("/")
+    assert resp.status_code == 503
+    assert "HTTP 503" in resp.get_data(as_text=True)
