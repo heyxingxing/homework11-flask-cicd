@@ -11,15 +11,15 @@
     @font-face{font-family:"Plex Mono";src:url("/static/fonts/plex-mono-500.woff2") format("woff2");font-weight:500;font-display:swap}
 
     :root{
-      --paper:#f2ede2; --card:#faf7f0; --ink:#1c1b19; --ink-2:#5f5b52; --ink-3:#8c877b; --rule:#d8d1c1; --rule-2:#e6e0d2;
-      --hit:#1d6a4d; --hit-bg:#dbe9df; --miss:#c2410c; --miss-bg:#f5ddcc; --off:#d6cfbf;
+      --paper:#eef1ee; --card:#f8faf8; --ink:#141a17; --ink-2:#4c5750; --ink-3:#7d8982; --rule:#cfd7d1; --rule-2:#e0e6e1;
+      --hit:#176b45; --hit-bg:#d6eadd; --miss:#9d2557; --miss-bg:#f3d9e4; --off:#cdd6d0;
       --serif:"Fraunces","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC",serif;
       --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
       --mono:"Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
     }
     @media (prefers-color-scheme:dark){
-      :root{--paper:#15161a;--card:#1c1e23;--ink:#ece7da;--ink-2:#a8a398;--ink-3:#77736a;--rule:#2f3238;--rule-2:#25282d;
-        --hit:#79d3a3;--hit-bg:#173126;--miss:#ff9d6c;--miss-bg:#3a2217;--off:#2c3036}
+      :root{--paper:#101513;--card:#171d1a;--ink:#e8efe9;--ink-2:#a3aea7;--ink-3:#6f7b74;--rule:#2a332e;--rule-2:#1f2823;
+        --hit:#7ad8a4;--hit-bg:#173226;--miss:#f08fb4;--miss-bg:#3a1d2a;--off:#27302b}
     }
     *{box-sizing:border-box}
     html{-webkit-text-size-adjust:100%}
@@ -29,7 +29,7 @@
     ol{list-style:none}
     a{color:inherit}
     code,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-    .label{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+    .label{font:600 12px/1.2 var(--sans);letter-spacing:.08em;color:var(--ink-3)}
     .wrap{max-width:1080px;margin:0 auto;padding:0 32px 56px}
 
     /* masthead */
@@ -42,9 +42,9 @@
     h1{font:600 44px/1.15 var(--serif);letter-spacing:.02em}
     .title p{margin-top:10px;color:var(--ink-2);max-width:34em}
     .go{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:600;padding:13px 22px;border-radius:3px;white-space:nowrap;transition:transform .15s,box-shadow .15s}
-    .go:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--miss)}
+    .go:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--hit)}
     .go:active{transform:none;box-shadow:none}
-    .go:focus-visible,.ghost:focus-visible{outline:3px solid var(--miss);outline-offset:3px}
+    .go:focus-visible,.ghost:focus-visible{outline:3px solid var(--hit);outline-offset:3px}
     .go svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
     /* panels */
@@ -74,7 +74,7 @@
     .ticks span.on{background:var(--ink)}
     .hit .ticks span.on{background:var(--hit)}
     .miss .ticks span.on{background:var(--miss)}
-    .scale{display:flex;justify-content:space-between;margin-top:8px;font:400 11px/1 var(--mono);color:var(--ink-3)}
+    .scale{display:flex;justify-content:space-between;margin-top:8px;font:400 12px/1 var(--mono);color:var(--ink-3)}
 
     /* path */
     .path{counter-reset:n}
@@ -94,9 +94,9 @@
     .catalog{margin-top:20px;padding:26px 0 0;overflow:hidden}
     .catalog .head{display:flex;justify-content:space-between;align-items:baseline;padding:0 28px 18px}
     h2{font:600 22px/1.2 var(--serif)}
-    h2 em{font:500 12px/1 var(--mono);font-style:normal;color:var(--ink-3);margin-left:10px;letter-spacing:.1em}
+    h2 em{font:500 13px/1 var(--sans);font-style:normal;color:var(--ink-3);margin-left:10px}
     table{width:100%;border-collapse:collapse;text-align:left}
-    th{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:11px 28px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--paper)}
+    th{font:600 12px/1 var(--sans);letter-spacing:.08em;color:var(--ink-3);padding:11px 28px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--paper)}
     td{padding:15px 28px;border-bottom:1px solid var(--rule-2);vertical-align:middle}
     tbody tr:last-child td{border-bottom:0}
     tbody tr{transition:background .15s}
@@ -121,7 +121,7 @@
     .facts dd{font:400 13px/1.5 var(--mono);overflow-wrap:anywhere}
     .facts .wide{grid-column:1/-1}
     .facts .wide dd{font-size:14px;color:var(--ink)}
-    .facts mark{background:var(--miss-bg);color:var(--miss);padding:0 3px;border-radius:2px}
+    .facts mark{background:var(--hit-bg);color:var(--hit);padding:0 3px;border-radius:2px}
 
     /* error */
     .fail{border-color:var(--miss)}
@@ -130,7 +130,7 @@
     .fail p{color:var(--ink-2);max-width:42em}
     .fail .ghost{display:inline-block;margin-top:22px;color:var(--ink);font-weight:600}
 
-    footer{display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:14px;border-top:1px solid var(--rule);color:var(--ink-3)}
+    footer{display:flex;justify-content:space-between;gap:12px;margin-top:34px;padding-top:14px;border-top:1px solid var(--rule);color:var(--ink-3);font:400 12px/1.4 var(--mono)}
 
     /* entrance */
     @media (prefers-reduced-motion:no-preference){
@@ -167,7 +167,7 @@
 {% set short = app_version[:7] %}
 <div class="wrap">
   <header class="bar rise">
-    <span class="label"><b>虚拟化与云计算</b> &nbsp;/&nbsp; 作业 11 &nbsp;/&nbsp; CI·CD</span>
+    <span class="label"><b>虚拟化与云计算</b> &nbsp;/&nbsp; 作业 11 &nbsp;/&nbsp; CI/CD</span>
     <span class="build {{ 'down' if error else '' }}" title="{{ app_version }}"><i></i>build {{ short }}</span>
   </header>
 
@@ -192,7 +192,7 @@
   {% set filled = (ttl * 60 / result.cache_ttl_configured)|round|int %}
   <main class="grid {{ 'hit' if hit else 'miss' }}">
     <section class="panel rise" style="--i:2" aria-label="本次读数">
-      <span class="label">Reading · 本次读数</span>
+      <span class="label">本次读数</span>
       <div class="read-top">
         <div class="source">{{ result.source }}
           <small>{{ '直接读取已有商品，没有执行模拟查询。' if hit else '缓存里没有商品，执行约 1 秒的模拟查询并写入 Redis。' }}</small>
@@ -212,7 +212,7 @@
     </section>
 
     <section class="panel rise" style="--i:3" aria-label="请求路径">
-      <span class="label">Path · 请求路径</span>
+      <span class="label">请求路径</span>
       <ol class="path">
         <li><b>浏览器</b><span>GET <code>/</code></span></li>
         <li><b>Flask · gunicorn</b><span>容器 <code>{{ hostname }}</code></span></li>
@@ -224,9 +224,9 @@
   </main>
 
   <section class="panel catalog rise" style="--i:4" aria-labelledby="pt">
-    <div class="head"><h2 id="pt">商品清单<em>{{ result.products|length }} ITEMS</em></h2><span class="label">本地固定数据</span></div>
+    <div class="head"><h2 id="pt">商品清单<em>{{ result.products|length }} 件</em></h2><span class="label">本地固定数据</span></div>
     <table>
-      <thead><tr><th scope="col">商品</th><th scope="col" class="cat">分类</th><th scope="col" class="num">价格 ¥</th><th scope="col" class="num stk">库存</th></tr></thead>
+      <thead><tr><th scope="col">商品</th><th scope="col" class="cat">分类</th><th scope="col" class="num">价格（元）</th><th scope="col" class="num stk">库存</th></tr></thead>
       <tbody>
         {% set tiles = {'P001':'t-a','P002':'t-b','P003':'t-c','P004':'t-d'} %}
         {% for p in result.products %}
@@ -242,17 +242,17 @@
   </section>
 
   <section class="panel facts rise" style="--i:5" aria-label="部署信息">
-    <span class="label" style="margin-bottom:8px">Deployment · 部署信息</span>
+    <span class="label" style="margin-bottom:8px">部署信息</span>
     <dl>
-      <div class="wide"><dt class="label">App version (commit SHA)</dt><dd><mark>{{ app_version }}</mark></dd></div>
-      <div><dt class="label">Redis key</dt><dd>{{ result.cache_key }}</dd></div>
-      <div><dt class="label">Generated at</dt><dd>{{ result.generated_at }}</dd></div>
-      <div><dt class="label">JSON</dt><dd><a href="/api/products">/api/products</a> · <a href="/version">/version</a> · <a href="/health">/health</a></dd></div>
+      <div class="wide"><dt class="label">版本（commit SHA）</dt><dd><mark>{{ app_version }}</mark></dd></div>
+      <div><dt class="label">缓存键</dt><dd>{{ result.cache_key }}</dd></div>
+      <div><dt class="label">数据生成时间</dt><dd>{{ result.generated_at }}</dd></div>
+      <div><dt class="label">接口</dt><dd><a href="/api/products">/api/products</a> · <a href="/version">/version</a> · <a href="/health">/health</a></dd></div>
     </dl>
   </section>
   {% endif %}
 
-  <footer class="label"><span>flask :5000 → redis :6379</span><span>{{ hostname }}</span></footer>
+  <footer><span>flask :5000 → redis :6379</span><span>{{ hostname }}</span></footer>
 </div>
 </body>
 </html>
